@@ -1,24 +1,15 @@
 import React from "react";
 import * as monaco from "monaco-editor/esm/vs/editor/edcore.main";
 import { WorkerAccessor, getKustoWorker } from "@kusto/monaco-kusto";
+import KustoWorker from "@kusto/monaco-kusto/release/esm/kusto.worker?worker";
+import MonacoEditorWorker from "monaco-editor/esm/vs/editor/editor.worker?worker";
 
 self.MonacoEnvironment = {
   getWorker(_moduleId: string, label: string) {
-    // https://webpack.js.org/guides/web-workers/
     if (label === "kusto") {
-      return new Worker(
-        /* webpackChunkName: "kusto-worker" */ new URL(
-          import.meta.resolve("@kusto/monaco-kusto/release/esm/kusto.worker"),
-          import.meta.url
-        )
-      );
+      return new KustoWorker();
     }
-    return new Worker(
-      /* webpackChunkName: "editor-worker" */ new URL(
-        import.meta.resolve("monaco-editor/esm/vs/editor/editor.worker"),
-        import.meta.url
-      )
-    );
+    return new MonacoEditorWorker();
   },
 };
 
