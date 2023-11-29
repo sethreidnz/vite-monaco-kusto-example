@@ -1,7 +1,6 @@
 import React from "react";
 import * as monaco from "monaco-editor/esm/vs/editor/edcore.main";
 import { WorkerAccessor, getKustoWorker } from "@kusto/monaco-kusto";
-import.meta.resolve("@kusto/monaco-kusto/release/esm/kusto.worker");
 
 self.MonacoEnvironment = {
   getWorker(_moduleId: string, label: string) {
