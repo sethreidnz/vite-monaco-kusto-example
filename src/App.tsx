@@ -1,15 +1,17 @@
 import React from "react";
 import * as monaco from "monaco-editor/esm/vs/editor/edcore.main";
 import { WorkerAccessor, getKustoWorker } from "@kusto/monaco-kusto";
-import KustoWorker from "@kusto/monaco-kusto/release/esm/kusto.worker?worker";
-import MonacoEditorWorker from "monaco-editor/esm/vs/editor/editor.worker?worker";
+import kustoWorkerUrl from "./monacoConfigHelperKustoWorker?url";
+import editorWorker from "./monacoConfigHelperEditorWorker?url";
 
-self.MonacoEnvironment = {
-  getWorker(_moduleId: string, label: string) {
-    if (label === "kusto") {
-      return new KustoWorker();
+window.MonacoEnvironment = {
+  getWorker(_moduleId, label) {
+    switch (label) {
+      case "kusto":
+        return new Worker(kustoWorkerUrl, { type: "module" });
+      default:
+        return new Worker(editorWorker, { type: "module" });
     }
-    return new MonacoEditorWorker();
   },
 };
 
