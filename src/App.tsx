@@ -1,6 +1,7 @@
 import React from "react";
 import * as monaco from "monaco-editor/esm/vs/editor/edcore.main";
 import { WorkerAccessor, getKustoWorker } from "@kusto/monaco-kusto";
+import.meta.resolve("@kusto/monaco-kusto/release/esm/kusto.worker");
 
 self.MonacoEnvironment = {
   getWorker(_moduleId: string, label: string) {
@@ -8,14 +9,14 @@ self.MonacoEnvironment = {
     if (label === "kusto") {
       return new Worker(
         /* webpackChunkName: "kusto-worker" */ new URL(
-          "@kusto/monaco-kusto/release/esm/kusto.worker",
+          import.meta.resolve("@kusto/monaco-kusto/release/esm/kusto.worker"),
           import.meta.url
         )
       );
     }
     return new Worker(
       /* webpackChunkName: "editor-worker" */ new URL(
-        "monaco-editor/esm/vs/editor/editor.worker",
+        import.meta.resolve("monaco-editor/esm/vs/editor/editor.worker"),
         import.meta.url
       )
     );
